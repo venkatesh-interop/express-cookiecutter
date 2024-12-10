@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Secretpassword123
+    volumes:
+      - mongodb_data:/data/db
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Secretpassword123
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine # Using the official Redis image (alpine version is lightweight)
+    container_name: redis
+    ports:
+      - "6379:6379" # Expose Redis on port 6379
+    volumes:
+      - redis_data:/data # Persist Redis data across container restarts
+    restart: always
+
+volumes:
+  mongodb_data:
+  postgres_data:
+  redis_data:
