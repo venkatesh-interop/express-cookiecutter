@@ -5,7 +5,7 @@ const router: Router = express.Router();
 
 // Root route
 router.get('/', (req: Request, res: Response) => {
-    res.send('Welcome to Express & TypeScript Server');
+    res.send('Welcome to {{ cookiecutter.project_name.upper().replace(" ", "_") }}');
 });
 
 // User-related routes
