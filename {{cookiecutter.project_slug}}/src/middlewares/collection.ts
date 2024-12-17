@@ -11,18 +11,13 @@ import { env } from '@/variables';
 import { ExtendedRequest } from '@/types';
 
 // Middleware to attach a dynamic MongoDB collection
-export const setCollection = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
-  const { resource } = req.params;
-
-  if (!resource) {
-    res.status(400).send({ error: 'Resource name is required' });
-    return;
-  }
-
+export const collectionMiddleware = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   try {
-    req.collection = await getCollection(resource || env.resourceType); // Attach collection to request
+    req.collection = await getCollection("resources"); // Attach collection to request
     next();
   } catch (error) {
     res.status(500).send({ error: 'Failed to set collection', details: error });
   }
 };
+
+export default collectionMiddleware

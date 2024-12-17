@@ -47,7 +47,7 @@ const auditMiddleware = (req: ExtendedRequest, res: any, next: NextFunction): vo
       method,
       url,
       status_code: statusCode,
-      request_time: requestTime.toISOString(),
+      request_time: requestTime,
       response_time: responseTime,
       ip_address: ip,
       user_id: userId,

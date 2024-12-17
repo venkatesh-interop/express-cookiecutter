@@ -4,7 +4,7 @@
   "github_username": "interopinnovations",
   "project_name": "My Express App",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
-  "resource_type": "AllergyIntolerance",
+  "resource_type": null,
   "description": "A simple Express.js app",
   "version": "0.1.0",
   "port": "3000"

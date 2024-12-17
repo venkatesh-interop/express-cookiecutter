@@ -8,7 +8,7 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: Secretpassword123
+      MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
       - mongodb_data:/data/db
 
@@ -19,8 +19,8 @@ services:
       - "5433:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Secretpassword123
-      POSTGRES_DB: mydatabase
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: microservices
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

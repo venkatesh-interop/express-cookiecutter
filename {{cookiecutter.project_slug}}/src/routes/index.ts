@@ -1,23 +1,39 @@
 // express
-import express, { Router, Request, Response } from 'express';
-
-// middlewares
-import auditMiddleware from '@/middlewares/audit';
-import cacheMiddleware from '@/middlewares/cache';
-import authMiddleware from '@/middlewares/auth';
-import { setCollection } from '@/middlewares/collection';
+import express, { Router, Response } from 'express';
 
 // routes
 import documentRouter from '@/routes/documents';
 
+// types
+import { ExtendedRequest } from '@/types';
+
+// environment variables
+import { env } from '@/variables';
+import { authMiddleware, collectionMiddleware, auditMiddleware, cacheMiddleware } from '@/middlewares';
+
+
 const router: Router = express.Router();
 
 // Root route
-router.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to {{ cookiecutter.project_name }}');
+router.get('/', (req: ExtendedRequest, res: Response) => {
+  if (req.user && env.resourceType) {
+    documentRouter.handle(req, res)
+  }
+  res.send('Welcome to FHIR {{ cookiecutter.project_name }} Service');
 });
 
+const basePath = env.resourceType ? "/api/:resource" : "/"
+
 // middlewares for all child routes under /api
-router.use('/api', authMiddleware, cacheMiddleware, auditMiddleware, setCollection, documentRouter);
+const middlewares = [
+  auditMiddleware,
+  authMiddleware,
+  collectionMiddleware,
+  cacheMiddleware,
+]
+
+router.use(basePath, middlewares, documentRouter)
+
+
 
 export default router;

@@ -10,7 +10,6 @@ dotenv.config();
 // Define a type for environment variables
 interface EnvVariables {
   serviceName: string;
-  resourceType: string;
   PORT: string;
   AWS_REGION: string;
   AWS_SECRETS_NAME: string;
@@ -20,10 +19,9 @@ interface EnvVariables {
 // Default environment variables
 const defaultEnv: EnvVariables = {
   serviceName: '{{ cookiecutter.project_slug }}',
-  resourceType: '{{ cookiecutter.resource_type }}',
   PORT: '{{ cookiecutter.port }}',
-  AWS_REGION: 'us-east-2',
-  AWS_SECRETS_NAME: process.env.NODE_ENV === 'production' ? 'main' : 'development',
+  AWS_REGION: process.env.AWS_REGION || 'us-east-2',
+  AWS_SECRETS_NAME: process.env.AWS_SECRETS_NAME || "development",
 };
 
 // Function to fetch secrets from AWS Secrets Manager
@@ -60,11 +58,13 @@ let env: EnvVariables = { ...defaultEnv };
 
 // Function to initialize variables
 export async function initializeVariables() {
+  const resourceType = defaultEnv.serviceName !== "api" ? '{{ cookiecutter.resource_type}}' : undefined
   try {
     const awsSecrets = await fetchSecrets();
     env = {
       ...defaultEnv,
       ...awsSecrets,
+      resourceType,
       DATABASE_URL: `postgresql://${awsSecrets.POSTGRES_USER}:${awsSecrets.POSTGRES_PASSWORD}@${awsSecrets.POSTGRES_HOST}:${awsSecrets.POSTGRES_PORT}/${awsSecrets.POSTGRES_DATABASE}`,
     };
   } catch (error) {

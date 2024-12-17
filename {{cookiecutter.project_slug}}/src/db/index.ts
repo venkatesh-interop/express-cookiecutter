@@ -18,19 +18,6 @@ export const connectToPg = async () => {
       connectionString: env.DATABASE_URL,
     });
 
-    // Log successful connection when the pool is created
-    pool.on('connect', () => {
-      console.log('Connected to PostgreSQL');
-    });
-
-    // Handle connection errors
-    pool.on('error', (error: any) => {
-      console.error('PostgreSQL connection error:', error);
-    });
-
-    // Acquire a client connection from the pool
-    await pool.connect();
-
     db = drizzle(pool, { schema });
   }
   return db;
