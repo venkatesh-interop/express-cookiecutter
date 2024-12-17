@@ -13,7 +13,7 @@ const cacheMiddleware = async (req: Request, res: Response, next: NextFunction):
     const reply = await redisClient.get(key);
 
     if (reply) {
-      res.json(JSON.parse(reply)); // Return cached response
+      res.send(JSON.parse(reply)); // Return cached response
       return;
     }
 
