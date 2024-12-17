@@ -1,5 +1,5 @@
 // express
-import { Request, NextFunction } from 'express';
+import { NextFunction } from 'express';
 
 // moment
 import moment from 'moment';
@@ -16,16 +16,11 @@ import { audits } from '@/db/schema';
 // environment variables
 import { env } from '@/variables';
 
-// Enhanced Request Interface
-interface EnhancedRequest extends Request {
-  user?: {
-    sub?: string; // User ID from JWT payload
-    [key: string]: any;
-  };
-}
+// types
+import { ExtendedRequest } from '@/types';
 
 // Middleware to audit requests and responses
-const auditMiddleware = (req: EnhancedRequest, res: any, next: NextFunction): void => {
+const auditMiddleware = (req: ExtendedRequest, res: any, next: NextFunction): void => {
   const serviceName: string = env.serviceName; // Service name from environment variables
   const requestTime = moment(); // Capture request start time
 

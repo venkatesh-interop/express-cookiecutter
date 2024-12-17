@@ -1,12 +1,19 @@
 // express
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 
 // redis connection
 import { redisClient } from '@/db/redis';
 
+// types
+import { ExtendedRequest } from '@/types';
+
 // Middleware to check cache first
-const cacheMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const key = req.originalUrl || req.url;
+const cacheMiddleware = async (
+  req: ExtendedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const key = req.url;
 
   try {
     // Check if the data exists in Redis

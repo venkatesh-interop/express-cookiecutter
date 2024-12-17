@@ -1,29 +1,20 @@
 // express
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 
 // jsonwebtoken
-import { verify, JwtPayload } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 
 // signing service
 import jwksRsa, { SigningKey } from 'jwks-rsa';
 
 // environment variables
 import { env } from '@/variables';
-interface DecodedToken extends JwtPayload {
-  [key: string]: any; // Adjust this to include specific token properties you expect
-}
 
-// Extend Express Request to include a `user` property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: DecodedToken;
-    }
-  }
-}
+// types
+import { ExtendedRequest } from '@/types';
 
 // middleware for the authorization
-const authCheck = (req: Request, res: Response, next: NextFunction): void => {
+const authCheck = (req: ExtendedRequest, res: Response, next: NextFunction): void => {
   const { authorization } = req.headers;
 
   if (!authorization) {
@@ -58,7 +49,7 @@ const authCheck = (req: Request, res: Response, next: NextFunction): void => {
       }
 
       // Attach decoded token to request object
-      req.user = decoded as DecodedToken;
+      req.user = decoded;
       next();
     },
   );

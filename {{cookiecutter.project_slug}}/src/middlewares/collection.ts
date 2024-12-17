@@ -1,12 +1,17 @@
 // express
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 
 // mongo database configuration
 import { getCollection } from '@/db/mongo';
+
+// environment variables
 import { env } from '@/variables';
 
+// types
+import { ExtendedRequest } from '@/types';
+
 // Middleware to attach a dynamic MongoDB collection
-export const setCollection = async (req: Request, res: Response, next: NextFunction) => {
+export const setCollection = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { resource } = req.params;
 
   if (!resource) {

@@ -1,11 +1,16 @@
 // express
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
+
+// mongodb
 import { ObjectId } from 'mongodb';
+
+// types
+import { ExtendedRequest } from '@/types';
 
 const router = Router();
 
 // **Create**: Insert a new document
-router.post('/:resource', async (req: Request, res: Response) => {
+router.post('/:resource', async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await req.collection?.insertOne(req.body);
     res.status(201).send(result);
@@ -15,7 +20,7 @@ router.post('/:resource', async (req: Request, res: Response) => {
 });
 
 // **Read**: Get all documents in a collection
-router.get('/:resource', async (req: Request, res: Response) => {
+router.get('/:resource', async (req: ExtendedRequest, res: Response) => {
   try {
     const documents = await req.collection?.find().toArray();
     res.send(documents);
@@ -25,7 +30,7 @@ router.get('/:resource', async (req: Request, res: Response) => {
 });
 
 // **Read One**: Get a single document by ID
-router.get('/:resource/:id', async (req: Request, res: Response) => {
+router.get('/:resource/:id', async (req: ExtendedRequest, res: Response) => {
   try {
     const { id } = req.params;
     const document = await req.collection?.findOne({ _id: new ObjectId(id) });
@@ -40,7 +45,7 @@ router.get('/:resource/:id', async (req: Request, res: Response) => {
 });
 
 // **Update**: Update a document by ID
-router.put('/:resource/:id', async (req: Request, res: Response) => {
+router.put('/:resource/:id', async (req: ExtendedRequest, res: Response) => {
   try {
     const { id } = req.params;
     const result = await req.collection?.updateOne({ _id: new ObjectId(id) }, { $set: req.body });
@@ -55,7 +60,7 @@ router.put('/:resource/:id', async (req: Request, res: Response) => {
 });
 
 // **Delete**: Delete a document by ID
-router.delete('/:resource/:id', async (req: Request, res: Response) => {
+router.delete('/:resource/:id', async (req: ExtendedRequest, res: Response) => {
   try {
     const { id } = req.params;
     const result = await req.collection?.deleteOne({ _id: new ObjectId(id) });
