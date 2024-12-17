@@ -1,1 +1,1 @@
-export { default as audits } from "./audit";
+export { default as audits } from './audit';

@@ -3,9 +3,14 @@
   "version": "{{ cookiecutter.version }}",
   "scripts": {
     "build": "npx tsc",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "push": "drizzle-kit push",
     "start": "node -r tsconfig-paths/register dist/index.js",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"**/*.{ts,md}\"",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -26,9 +31,13 @@
     "nodemon": "^3.1.7",
     "pg": "^8.13.1",
     "redis": "^4.7.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/pg": "^8.11.10",
