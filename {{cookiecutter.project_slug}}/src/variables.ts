@@ -21,7 +21,7 @@ const defaultEnv: EnvVariables = {
   serviceName: '{{ cookiecutter.project_slug }}',
   PORT: '{{ cookiecutter.port }}',
   AWS_REGION: process.env.AWS_REGION || 'us-east-2',
-  AWS_SECRETS_NAME: process.env.AWS_SECRETS_NAME || "development",
+  AWS_SECRETS_NAME: process.env.AWS_SECRETS_NAME || 'development',
 };
 
 // Function to fetch secrets from AWS Secrets Manager
@@ -58,7 +58,8 @@ let env: EnvVariables = { ...defaultEnv };
 
 // Function to initialize variables
 export async function initializeVariables() {
-  const resourceType = defaultEnv.serviceName !== "api" ? '{{ cookiecutter.resource_type}}' : undefined
+  const resourceType =
+    defaultEnv.serviceName !== 'api' ? '{{ cookiecutter.resource_type}}' : undefined;
   try {
     const awsSecrets = await fetchSecrets();
     env = {
