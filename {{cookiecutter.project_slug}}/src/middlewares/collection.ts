@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 // mongo database configuration
 import { getCollection } from '@/db/mongo';
+import { env } from '@/variables';
 
 // Middleware to attach a dynamic MongoDB collection
 export const setCollection = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +15,7 @@ export const setCollection = async (req: Request, res: Response, next: NextFunct
   }
 
   try {
-    req.collection = await getCollection(resource); // Attach collection to request
+    req.collection = await getCollection(resource || env.resourceType); // Attach collection to request
     next();
   } catch (error) {
     res.status(500).send({ error: 'Failed to set collection', details: error });

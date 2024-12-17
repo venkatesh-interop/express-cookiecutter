@@ -9,17 +9,19 @@ dotenv.config();
 
 // Define a type for environment variables
 interface EnvVariables {
+  serviceName: string;
+  resourceType: string;
   PORT: string;
   AWS_REGION: string;
   AWS_SECRETS_NAME: string;
-  serviceName: string;
   [key: string]: string | undefined;
 }
 
 // Default environment variables
 const defaultEnv: EnvVariables = {
-  PORT: '{{ cookiecutter.port }}',
   serviceName: '{{ cookiecutter.project_slug }}',
+  resourceType: '{{ cookiecutter.resource_type }}',
+  PORT: '{{ cookiecutter.port }}',
   AWS_REGION: 'us-east-2',
   AWS_SECRETS_NAME: process.env.NODE_ENV === 'production' ? 'main' : 'development',
 };
