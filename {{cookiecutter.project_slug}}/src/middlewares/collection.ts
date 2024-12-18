@@ -4,9 +4,6 @@ import { Response, NextFunction } from 'express';
 // mongo database configuration
 import { getCollection } from '@/db/mongo';
 
-// environment variables
-import { env } from '@/variables';
-
 // types
 import { ExtendedRequest } from '@/types';
 

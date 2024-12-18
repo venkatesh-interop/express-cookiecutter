@@ -68,7 +68,7 @@ export async function initializeVariables() {
 
   const PORT = defaultEnv.PORT.startsWith('{') ? '3000' : defaultEnv.PORT;
   const API_PREFIX =
-    env.API_PREFIX.startsWith('/api') || env.API_PREFIX === '/' ? env.API_PREFIX : '/';
+    env.API_PREFIX.startsWith('/api') || env.API_PREFIX === '/' ? env.API_PREFIX : '/api/:resource';
 
   try {
     const awsSecrets = await fetchSecrets();

@@ -7,9 +7,6 @@ import { ObjectId } from 'mongodb';
 // types
 import { ExtendedRequest } from '@/types';
 
-// environment variables
-import { env } from '@/variables';
-
 const router: any = Router();
 
 // **Create**: Insert a new document
@@ -23,7 +20,7 @@ router.post('/', async (req: ExtendedRequest, res: Response) => {
 });
 
 // **Read**: Get all documents in a collection
-router.get(env.API_PREFIX, async (req: ExtendedRequest, res: Response) => {
+router.get("/", async (req: ExtendedRequest, res: Response) => {
   try {
     const documents = await req.collection?.find().toArray();
     res.send(documents);

@@ -6,6 +6,8 @@ import documentRouter from '@/routes/documents';
 
 // environment variables
 import { env } from '@/variables';
+
+// middlewares
 import {
   authMiddleware,
   collectionMiddleware,
