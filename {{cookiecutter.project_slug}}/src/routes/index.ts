@@ -18,7 +18,9 @@ import {
 const router: Router = express.Router();
 
 const apiPrefix =
-  env.API_PREFIX.startsWith('/api') || env.API_PREFIX === '/' ? env.API_PREFIX : '/api/:resource';
+  env.API_PREFIX.includes('{') && env.API_PREFIX.includes('}')
+    ? '/api/:resource'
+    : env.API_PREFIX;
 
 // Root route
 router.get('/', (req: Request, res: Response) => {
