@@ -13,6 +13,8 @@ interface EnvVariables {
   PORT: string;
   AWS_REGION: string;
   AWS_SECRETS_NAME: string;
+  API_PREFIX: string;
+  RESOURCE_TYPE: string;
   [key: string]: string | undefined;
 }
 
@@ -22,6 +24,8 @@ const defaultEnv: EnvVariables = {
   PORT: '{{ cookiecutter.port }}',
   AWS_REGION: process.env.AWS_REGION || 'us-east-2',
   AWS_SECRETS_NAME: process.env.AWS_SECRETS_NAME || 'development',
+  API_PREFIX: '{{ cookiecutter.api_prefix }}',
+  RESOURCE_TYPE: '{{ cookiecutter.resource_type }}',
 };
 
 // Function to fetch secrets from AWS Secrets Manager
@@ -59,13 +63,18 @@ let env: EnvVariables = { ...defaultEnv };
 // Function to initialize variables
 export async function initializeVariables() {
   const resourceType =
-    defaultEnv.serviceName !== 'api' ? '{{ cookiecutter.resource_type}}' : undefined;
+    defaultEnv.RESOURCE_TYPE === '{{ cookiecutter.resource_type }}'
+      ? undefined
+      : defaultEnv.RESOURCE_TYPE;
+  const PORT = defaultEnv.PORT === '{{ cookiecutter.port }}' ? '3000' : defaultEnv.PORT;
+
   try {
     const awsSecrets = await fetchSecrets();
     env = {
       ...defaultEnv,
       ...awsSecrets,
       resourceType,
+      PORT,
       DATABASE_URL: `postgresql://${awsSecrets.POSTGRES_USER}:${awsSecrets.POSTGRES_PASSWORD}@${awsSecrets.POSTGRES_HOST}:${awsSecrets.POSTGRES_PORT}/${awsSecrets.POSTGRES_DATABASE}`,
     };
   } catch (error) {

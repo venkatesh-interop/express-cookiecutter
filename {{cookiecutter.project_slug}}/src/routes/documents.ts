@@ -7,13 +7,12 @@ import { ObjectId } from 'mongodb';
 // types
 import { ExtendedRequest } from '@/types';
 
+// environment variables
+import { env } from '@/variables';
+
 const router: any = Router();
 
-(router as any).handle = (req: ExtendedRequest, res: Response) => {
-  router(req, res, () => {
-    res.status(404).send('Route not found');
-  });
-};
+const apiPrefix = env.API_PREFIX === '{{ cookiecutter.api_prefix }}' ? '/' : '/list';
 
 // **Create**: Insert a new document
 router.post('/', async (req: ExtendedRequest, res: Response) => {
@@ -26,7 +25,7 @@ router.post('/', async (req: ExtendedRequest, res: Response) => {
 });
 
 // **Read**: Get all documents in a collection
-router.get('/', async (req: ExtendedRequest, res: Response) => {
+router.get(apiPrefix, async (req: ExtendedRequest, res: Response) => {
   try {
     const documents = await req.collection?.find().toArray();
     res.send(documents);

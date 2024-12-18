@@ -4,6 +4,7 @@
   "github_username": "interopinnovations",
   "project_name": "My Express App",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "api_prefix": "/api/:resource",
   "resource_type": null,
   "description": "A simple Express.js app",
   "version": "0.1.0",

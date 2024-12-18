@@ -1,11 +1,8 @@
 // express
-import express, { Router, Response } from 'express';
+import express, { Request, Router, Response } from 'express';
 
 // routes
 import documentRouter from '@/routes/documents';
-
-// types
-import { ExtendedRequest } from '@/types';
 
 // environment variables
 import { env } from '@/variables';
@@ -18,19 +15,16 @@ import {
 
 const router: Router = express.Router();
 
+const apiPrefix = env.API_PREFIX === '{{ cookiecutter.api_prefix }}' ? '/api/:resource' : '/';
+
 // Root route
-router.get('/', (req: ExtendedRequest, res: Response) => {
-  if (req.user && env.resourceType) {
-    documentRouter.handle(req, res);
-  }
+router.get('/', (req: Request, res: Response) => {
   res.send('Welcome to FHIR {{ cookiecutter.project_name }} Service');
 });
 
-const basePath = env.resourceType ? '/api/:resource' : '/';
-
 // middlewares for all child routes under /api
-const middlewares = [auditMiddleware, authMiddleware, collectionMiddleware, cacheMiddleware];
+const middlewares = [authMiddleware, auditMiddleware, cacheMiddleware, collectionMiddleware];
 
-router.use(basePath, middlewares, documentRouter);
+router.use(apiPrefix as string, middlewares, documentRouter);
 
 export default router;

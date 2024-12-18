@@ -7,6 +7,9 @@ import cors from 'cors';
 // body parser
 import bodyParser from 'body-parser';
 
+// sentry
+import * as Sentry from '@sentry/node';
+
 // local router
 import router from '@/routes';
 
@@ -21,6 +24,7 @@ import { connectToRedis } from '@/db/redis';
 
 // postgres database configuration
 import { connectToPg } from '@/db';
+import { errorMiddleware, noRouteMiddleware } from '@/middlewares';
 
 // Function to initialize variables and dependencies
 async function initializeApp() {
@@ -36,6 +40,15 @@ async function initializeApp() {
 
     // Connect to Redis
     await connectToRedis();
+
+    // Initialize Sentry only in production
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.init({
+        dsn: env.SENTRY_DSN,
+        environment: 'production',
+        tracesSampleRate: 1.0,
+      });
+    }
 
     console.log('All dependencies initialized successfully');
   } catch (error) {
@@ -56,6 +69,12 @@ function createServer() {
 
   // local router
   app.use('/', router);
+
+  // Add Sentry request handler middleware
+  Sentry.setupExpressErrorHandler(app);
+
+  app.use(noRouteMiddleware);
+  app.use(errorMiddleware);
 
   // Start the server
   app.listen(port, () => {
