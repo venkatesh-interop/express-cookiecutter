@@ -62,11 +62,11 @@ let env: EnvVariables = { ...defaultEnv };
 
 // Function to initialize variables
 export async function initializeVariables() {
-  const resourceType = defaultEnv.RESOURCE_TYPE.startsWith('{{')
+  const resourceType = defaultEnv.RESOURCE_TYPE.startsWith('{')
     ? undefined
     : defaultEnv.RESOURCE_TYPE;
 
-  const PORT = defaultEnv.PORT.startsWith('{{') ? '3000' : defaultEnv.PORT;
+  const PORT = defaultEnv.PORT.startsWith('{') ? '3000' : defaultEnv.PORT;
   const API_PREFIX =
     env.API_PREFIX.startsWith('/api') || env.API_PREFIX === '/' ? env.API_PREFIX : '/';
 
