@@ -20,7 +20,7 @@ router.post('/', async (req: ExtendedRequest, res: Response) => {
 });
 
 // **Read**: Get all documents in a collection
-router.get("/", async (req: ExtendedRequest, res: Response) => {
+router.get('/', async (req: ExtendedRequest, res: Response) => {
   try {
     const documents = await req.collection?.find().toArray();
     res.send(documents);

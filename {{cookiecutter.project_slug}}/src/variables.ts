@@ -67,8 +67,6 @@ export async function initializeVariables() {
     : defaultEnv.RESOURCE_TYPE;
 
   const PORT = defaultEnv.PORT.startsWith('{') ? '3000' : defaultEnv.PORT;
-  const API_PREFIX =
-    env.API_PREFIX.startsWith('/api') || env.API_PREFIX === '/' ? env.API_PREFIX : '/api/:resource';
 
   try {
     const awsSecrets = await fetchSecrets();
@@ -77,7 +75,6 @@ export async function initializeVariables() {
       ...awsSecrets,
       resourceType,
       PORT,
-      API_PREFIX,
       DATABASE_URL: `postgresql://${awsSecrets.POSTGRES_USER}:${awsSecrets.POSTGRES_PASSWORD}@${awsSecrets.POSTGRES_HOST}:${awsSecrets.POSTGRES_PORT}/${awsSecrets.POSTGRES_DATABASE}`,
     };
   } catch (error) {
