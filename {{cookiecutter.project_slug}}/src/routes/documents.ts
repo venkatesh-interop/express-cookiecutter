@@ -12,8 +12,6 @@ import { env } from '@/variables';
 
 const router: any = Router();
 
-const apiPrefix = env.API_PREFIX === '{{ cookiecutter.api_prefix }}' ? '/' : '/list';
-
 // **Create**: Insert a new document
 router.post('/', async (req: ExtendedRequest, res: Response) => {
   try {
@@ -25,7 +23,7 @@ router.post('/', async (req: ExtendedRequest, res: Response) => {
 });
 
 // **Read**: Get all documents in a collection
-router.get(apiPrefix, async (req: ExtendedRequest, res: Response) => {
+router.get(env.API_PREFIX, async (req: ExtendedRequest, res: Response) => {
   try {
     const documents = await req.collection?.find().toArray();
     res.send(documents);
